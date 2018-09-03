@@ -20,7 +20,7 @@ $app = new \Slim\App([
 */
 $app->post('/createuser', function(Request $request, Response $response){
 
-        $request_data = $request->getQueryParams('name');
+        $request_data = $request->getParsedBody();
 
         $email = $request_data['email'];
         $password = $request_data['password'];
@@ -71,7 +71,7 @@ $app->post('/createuser', function(Request $request, Response $response){
 
 $app->post('/userlogin', function(Request $request, Response $response){
 
-        $request_data = $request->getQueryParams('name');
+        $request_data = $request->getParsedBody();
 
         $email = $request_data['email'];
         $password = $request_data['password'];
@@ -144,7 +144,7 @@ $app->put('/updateuser/{id}', function(Request $request, Response $response, arr
 
     $id = $args['id'];
 
-        $request_data = $request->getQueryParams('name');
+        $request_data = $request->getParsedBody();
         $email = $request_data['email'];
         $name = $request_data['name'];
 
@@ -181,7 +181,7 @@ $app->put('/updateuser/{id}', function(Request $request, Response $response, arr
 
 $app->put('/updatepassword', function(Request $request, Response $response){
         
-        $request_data = $request->getQueryParams('name');
+        $request_data = $request->getParsedBody();
 
         $currentpassword = $request_data['currentpassword'];
         $newpassword = $request_data['newpassword'];
