@@ -277,12 +277,12 @@ $app->post('/createpronos', function(Request $request, Response $response){
 $app->get('/allpronos', function(Request $request, Response $response){
     $db = new DbOperations;
 
-    $users = $db->getAllPronos();
+    $pronos = $db->getAllPronos();
 
     $response_data = array();
 
     $response_data['error'] = false;
-    $response_data['users'] = $users;
+    $response_data['pronos'] = $pronos;
 
     $response->write(json_encode($response_data));
 
