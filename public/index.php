@@ -13,11 +13,7 @@ $app = new \Slim\App([
         'displayErrorDetails'=>true
     ]
 ]);
-/* 
-    endpoint: createuser
-    parameters: email, password, name, school
-    method: POST
-*/
+
 $app->post('/createuser', function(Request $request, Response $response){
 
         $request_data = $request->getParsedBody();
@@ -238,5 +234,61 @@ $app->delete('/deleteuser/{id}', function(Request $request, Response $response, 
     ->withStatus(200);
 });
 
-$app->run();
+$app->post('/createpronos', function(Request $request, Response $response){
+    $request_data = $request->getParsedBody();
 
+    $equipe1 = $request_data['equipe1'];
+    $equipe2 = $request_data['equipe2'];
+    $cote1 = $request_data['cote1'];
+    $cote2 = $request_data['cote2'];
+    $matchNull = $request_data['matchNull'];
+
+    $db = new DbOperations;
+
+    $result = $db->createPronos($equipe1, $equipe2, $cote1, $cote2, $matchNull);
+
+    if($result == PRONOS_CREATED){
+
+        $message = array();
+        $message['error'] = false;
+        $message['message'] = 'Pronos created successfully';
+
+        $response->write(json_encode($message));
+
+        return $response
+            ->withHeader('Content-type', 'application/json')
+            ->withStatus(201);
+
+    }else if($result == PRONOS_FAILURE) {
+
+        $message = array();
+        $message['error'] = true;
+        $message['message'] = 'Some error occurred';
+
+        $response->write(json_encode($message));
+
+        return $response
+            ->withHeader('Content-type', 'application/json')
+            ->withStatus(422);
+
+    }
+});
+
+$app->get('/allpronos', function(Request $request, Response $response){
+    $db = new DbOperations;
+
+    $users = $db->getAllPronos();
+
+    $response_data = array();
+
+    $response_data['error'] = false;
+    $response_data['users'] = $users;
+
+    $response->write(json_encode($response_data));
+
+    return $response
+        ->withHeader('Content-type', 'application/json')
+        ->withStatus(200);
+});
+
+$app->run();

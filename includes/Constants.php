@@ -1,10 +1,12 @@
 <?php 
 
+// DB //
     define('DB_HOST', 'bpoggifrpw876.mysql.db');
     define('DB_USER', 'bpoggifrpw876');
     define('DB_PASSWORD', 'Mnmdp01192');
     define('DB_NAME', 'bpoggifrpw876');
-
+//----------------------------------------------------//
+// USER //
     define('USER_CREATED', 101);
     define('USER_EXISTS', 102);
     define('USER_FAILURE', 103); 
@@ -16,3 +18,8 @@
     define('PASSWORD_CHANGED', 301);
     define('PASSWORD_DO_NOT_MATCH', 302);
     define('PASSWORD_NOT_CHANGED', 303);
+// -------------------------------------------------- //
+// PRONOS //
+    define('PRONOS_CREATED', 401);
+    define('PRONOS_FAILURE', 402);
+// -------------------------------------------------- //

@@ -10,6 +10,7 @@
             $this->con = $db->connect(); 
         }
 
+        //PARTIE USER
         public function createUser($email, $password, $name){
            if(!$this->isEmailExist($email)){
                 $stmt = $this->con->prepare("INSERT INTO vivi_users (email, password, name) VALUES (?, ?, ?)");
@@ -73,7 +74,7 @@
             return $user; 
         }
 
-        public function updateUser($email, $name, $school, $id){
+        public function updateUser($email, $name, $id){
             $stmt = $this->con->prepare("UPDATE vivi_users SET email = ?, name = ? WHERE id = ?");
             $stmt->bind_param("ssi", $email, $name, $id);
             if($stmt->execute())
@@ -113,5 +114,34 @@
             $stmt->execute(); 
             $stmt->store_result(); 
             return $stmt->num_rows > 0;  
+        }
+        // ------------------------------------------------------------------------------ //
+
+        // PARTIE PRONOS
+        public function createPronos($equipe1, $equipe2, $cote1, $cote2, $matchNull){
+                $stmt = $this->con->prepare("INSERT INTO vivi_pronos (equipe1, equipe2, cote1, cote2, matchNull) VALUES (?, ?, ?, ?, ?)");
+                $stmt->bind_param('sssss', $equipe1, $equipe2, $cote1, $cote2, $matchNull);
+                if($stmt->execute()){
+                    return PRONOS_CREATED;
+                }
+            return PRONOS_FAILURE;
+        }
+
+        public function getAllPronos(){
+            $stmt = $this->con->prepare("SELECT id, equipe1,equipe2, cote1, cote2, matchNull FROM vivi_pronos;");
+            $stmt->execute();
+            $stmt->bind_result($id, $equipe1, $equipe2, $cote1, $cote2, $matchNull);
+            $pronos = array();
+            while($stmt->fetch()){
+                $prono = array();
+                $prono['id'] = $id;
+                $prono['equipe1']= $equipe1;
+                $prono['equipe2'] = $equipe2;
+                $prono['cote1'] = $cote1;
+                $prono['cote2'] = $cote1;
+                $prono['matchNull'] = $matchNull;
+                array_push($pronos, $prono);
+            }
+            return $pronos;
         }
     }
